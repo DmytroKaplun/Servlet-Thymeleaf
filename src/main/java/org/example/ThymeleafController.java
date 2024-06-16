@@ -18,24 +18,7 @@ import java.time.format.DateTimeFormatter;
 
 @WebServlet(value = "/time")
 public class ThymeleafController extends HttpServlet {
-    private TemplateEngine engine;
-
-    @Override
-    public void init() {
-        engine = new TemplateEngine();
-        ClassLoaderTemplateResolver resolver = new ClassLoaderTemplateResolver();
-        resolver.setPrefix("templates/");
-        resolver.setSuffix(".html");
-        resolver.setTemplateMode("HTML5");
-        resolver.setOrder(engine.getTemplateResolvers().size());
-        resolver.setCacheable(false);
-        engine.addTemplateResolver(resolver);
-    }
-
-    public void process(String templateName, Context context, jakarta.servlet.http.HttpServletResponse response) throws IOException {
-        response.setContentType("text/html;charset=UTF-8");
-        engine.process(templateName, context, response.getWriter());
-    }
+    private TemplateConfig templateConfig = new TemplateConfig();
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) {
@@ -51,7 +34,7 @@ public class ThymeleafController extends HttpServlet {
         context.setVariable("time", formattedDateTime);
         resp.addCookie(new Cookie("lastTimezone", timezone));
         try {
-            process("final-time.html", context, resp);
+            templateConfig.process("final-time.html", context, resp);
         } catch (IOException e) {
             e.getStackTrace();
         }
@@ -81,7 +64,7 @@ public class ThymeleafController extends HttpServlet {
                 resp.setContentType("text/html; charset=utf-8");
                 context.setVariable("mistake", timezone);
                 try {
-                    process("wrong-query", context, resp);
+                    templateConfig.process("wrong-query", context, resp);
                 } catch (IOException ex) {
                     e.getStackTrace();
                 }
