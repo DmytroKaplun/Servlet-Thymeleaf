@@ -22,7 +22,10 @@ public class TimezoneValidateFilter extends HttpFilter {
     private Pattern pattern;
     private TemplateConfig templateConfig = new TemplateConfig();
 
-
+    public void init(FilterConfig config) {
+        String regex = config.getInitParameter("pattern");
+        pattern = Pattern.compile(regex);
+    }
 
     @Override
     public void doFilter(HttpServletRequest req, HttpServletResponse resp,
