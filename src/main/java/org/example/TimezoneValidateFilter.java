@@ -20,20 +20,11 @@ import java.util.regex.Pattern;
 })
 public class TimezoneValidateFilter extends HttpFilter {
     private Pattern pattern;
-    private TemplateEngine engine;
+    private TemplateConfig templateConfig = new TemplateConfig();
 
-    @Override
     public void init(FilterConfig config) {
         String regex = config.getInitParameter("pattern");
         pattern = Pattern.compile(regex);
-
-        engine = new TemplateEngine();
-        ClassLoaderTemplateResolver resolver = new ClassLoaderTemplateResolver();
-        resolver.setPrefix("templates/");
-        resolver.setSuffix(".html");
-        resolver.setTemplateMode("HTML5");
-        resolver.setCacheable(false);
-        engine.addTemplateResolver(resolver);
     }
 
     @Override
@@ -50,7 +41,7 @@ public class TimezoneValidateFilter extends HttpFilter {
                 Context context = new Context();
                 context.setVariable("timezone", timezone);
 
-                engine.process("invalid-timezone", context, resp.getWriter());
+                templateConfig.process("wrong-query", context, resp);
                 return;
             }
         }
