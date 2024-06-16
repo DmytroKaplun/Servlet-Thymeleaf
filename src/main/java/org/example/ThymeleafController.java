@@ -39,10 +39,8 @@ public class ThymeleafController extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) {
-        System.out.println("Received request at /time");
         Context context = new Context();
         String timezone = getTimezone(req);
-        System.out.println("Received timezone: " + timezone);
         ZoneId zoneId = getZoneId(resp, timezone, context);
         if (zoneId == null) return;
 
@@ -61,7 +59,6 @@ public class ThymeleafController extends HttpServlet {
 
     private static String getTimezone(HttpServletRequest req) {
         String timezone = req.getParameter("timezone");
-        System.out.println(timezone + "----------------------");
         if (req.getParameter("timezone") == null) {
             Cookie[] cookies = req.getCookies();
             for (Cookie cookie : cookies) {

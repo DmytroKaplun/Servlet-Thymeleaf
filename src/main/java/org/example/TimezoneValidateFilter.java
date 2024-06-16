@@ -51,9 +51,6 @@ public class TimezoneValidateFilter extends HttpFilter {
                 context.setVariable("timezone", timezone);
 
                 engine.process("invalid-timezone", context, resp.getWriter());
-//                resp.getWriter().write("<html><body><h1>Invalid timezone: " + timezone +
-//                        "</h1><p>Enter the timezone e.g., Europe/Kiev</p>" +
-//                        "<button onclick=\"window.history.back();\">Back</button></body></html>");
                 return;
             }
         }
